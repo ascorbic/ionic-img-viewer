@@ -1,5 +1,5 @@
 import { App } from 'ionic-angular';
-import { ElementRef, HostListener, Directive } from '@angular/core';
+import { ElementRef, HostListener, Directive, Input } from '@angular/core';
 
 import { ImageViewer } from './image-viewer';
 
@@ -7,6 +7,7 @@ import { ImageViewer } from './image-viewer';
 	selector: '[imageViewer]'
 })
 export class ImageViewerDirective {
+	@Input() zoom: string;
 
 	constructor(
 		private _app: App,
@@ -16,8 +17,8 @@ export class ImageViewerDirective {
 	@HostListener('click', ['$event.target'])
 	onClick($event): void {
 		let position = this._el.nativeElement.getBoundingClientRect();
-
-		let imageViewer = ImageViewer.create({image: this._el.nativeElement.src, position: position});
+		let src = this.zoom || this._el.nativeElement.src;
+		let imageViewer = ImageViewer.create({image: src, position: position});
 		this._app.present(imageViewer, {});
 	}
 }
